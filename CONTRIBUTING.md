@@ -63,7 +63,7 @@ You can communicate with us and other contributors by using one of the following
 
 ## Code of conduct
 
-We want this project to be a welcoming and inclusive community for everyone. We expect all contributors to follow our [code of conduct](https://github.com/soysoliscarlos/terraform-azurerm-ADDC/blob/main/CODE_OF_CONDUCT.md), which defines the expected behavior and values of the community, and how to report violations. By participating in this project, you agree to abide by its terms.
+We want this project to be a welcoming and inclusive community for everyone. We expect all contributors to follow our [code of conduct](https://github.com/soysoliscarlos/terraform-azurerm-AVD/blob/main/CODE_OF_CONDUCT.md), which defines the expected behavior and values of the community, and how to report violations. By participating in this project, you agree to abide by its terms.
 
 ## Additional information
 
