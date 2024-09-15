@@ -3,8 +3,8 @@ resource "azurerm_virtual_desktop_workspace" "workspace" {
   name                = var.workspace
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
-  friendly_name       = "${var.prefix} Workspace"
-  description         = "${var.prefix} Workspace"
+  friendly_name       = "${var.prefix}-Workspace"
+  description         = "${var.prefix}-Workspace"
   depends_on = [
     azurerm_resource_group.rg,
   ]

@@ -12,7 +12,7 @@ variable "rg_name" {
 variable "workspace" {
   type        = string
   description = "Name of the Azure Virtual Desktop workspace"
-  default     = "AVD Workspace"
+  default     = "AVD-Workspace"
 }
 
 variable "hostpool" {

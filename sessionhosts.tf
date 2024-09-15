@@ -54,6 +54,9 @@ resource "azurerm_windows_virtual_machine" "avd_vm" {
     sku       = "win11-22h2-avd"
     version   = "latest"
   }
+  
+    boot_diagnostics {
+  }
 
   depends_on = [
     azurerm_resource_group.rg,
@@ -151,8 +154,9 @@ resource "azurerm_virtual_machine_extension" "dsc" {
   ]
 }
 
+/*
 resource "azurerm_virtual_machine_extension" "AADLoginForWindows" {
-  /*
+  
   $publisher="Microsoft.Azure.ActiveDirectory"
   $extension="AADLoginForWindows"
   $location="eastus"
@@ -161,6 +165,7 @@ resource "azurerm_virtual_machine_extension" "AADLoginForWindows" {
 
   az vm extension image show -l $location --publisher $publisher -n $extension --version $latest
   */
+/*  
   count                      = var.rdsh_count
   name                       = "${var.prefix}-AADLoginForWindows-${count.index + 1}"
   publisher                  = "Microsoft.Azure.ActiveDirectory"
@@ -173,3 +178,4 @@ resource "azurerm_virtual_machine_extension" "AADLoginForWindows" {
     azurerm_virtual_machine_extension.dsc
   ]
 }
+*/
