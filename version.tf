@@ -1,13 +1,12 @@
- terraform {
-  backend "local" {}
+terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~>3.84"
+      version = "~> 4.0"
     }
     azuread = {
-      source = "hashicorp/azuread"
-      version = "~>2.46"
+      source  = "hashicorp/azuread"
+      version = "~> 2.0"
     }
   }
 }
