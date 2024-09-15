@@ -22,12 +22,7 @@ output "location" {
   description = "The Azure region"
   value       = azurerm_resource_group.rg.location
 }
-/*
-output "AVD_user_groupname" {
-  description = "Azure Active Directory Group for AVD users"
-  value       = azuread_group.aad_group.display_name
-}
-*/
+
 output "vnetrange" {
   description = "Address range for deployment vnet"
   value       = azurerm_virtual_network.vnet.address_space

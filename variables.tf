@@ -79,3 +79,14 @@ variable "aad_group_name" {
   default     = "AVDUsers"
   description = "Azure Active Directory Group for AVD users"
 }
+
+variable "subscription_id" {
+  type        = string
+  description = "Subscription ID"
+}
+
+variable "tenant_id" {
+  type        = string
+  description = "Tenant ID"
+
+}

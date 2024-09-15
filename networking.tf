@@ -1,7 +1,6 @@
 resource "azurerm_virtual_network" "vnet" {
-  name          = "${var.prefix}-VNet"
-  address_space = var.vnet_range
-  #dns_servers         = var.dns_servers
+  name                = "${var.prefix}-VNet"
+  address_space       = var.vnet_range
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   depends_on          = [azurerm_resource_group.rg]
@@ -14,7 +13,7 @@ resource "azurerm_subnet" "subnet" {
   address_prefixes     = var.subnet_range
   depends_on           = [azurerm_virtual_network.vnet]
 }
-/*
+
 resource "azurerm_network_security_group" "nsg" {
   name                = "${var.prefix}-NSG"
   location            = azurerm_resource_group.rg.location
@@ -36,4 +35,4 @@ resource "azurerm_network_security_group" "nsg" {
 resource "azurerm_subnet_network_security_group_association" "nsg_assoc" {
   subnet_id                 = azurerm_subnet.subnet.id
   network_security_group_id = azurerm_network_security_group.nsg.id
-}*/
+}

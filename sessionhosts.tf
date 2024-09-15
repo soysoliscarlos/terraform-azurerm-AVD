@@ -1,14 +1,6 @@
 locals {
   registration_token = azurerm_virtual_desktop_host_pool_registration_info.registrationinfo.token
 }
-/*
-resource "random_string" "AVD_local_password" {
-  count            = var.rdsh_count
-  length           = 16
-  special          = true
-  min_special      = 2
-  override_special = "*!@#?"
-}*/
 
 resource "azurerm_network_interface" "avd_vm_nic" {
   count               = var.rdsh_count
@@ -41,7 +33,7 @@ resource "azurerm_windows_virtual_machine" "avd_vm" {
   identity {
     type = "SystemAssigned"
   }
-  
+
   os_disk {
     name                 = "${lower(var.prefix)}-${count.index + 1}"
     caching              = "ReadWrite"
@@ -54,8 +46,8 @@ resource "azurerm_windows_virtual_machine" "avd_vm" {
     sku       = "win11-22h2-avd"
     version   = "latest"
   }
-  
-    boot_diagnostics {
+
+  boot_diagnostics {
   }
 
   depends_on = [
@@ -63,38 +55,6 @@ resource "azurerm_windows_virtual_machine" "avd_vm" {
     azurerm_network_interface.avd_vm_nic
   ]
 }
-
-/*
-resource "azurerm_virtual_machine_extension" "domain_join" {
-  count                      = var.rdsh_count
-  name                       = "${var.prefix}-${count.index + 1}-domainJoin"
-  virtual_machine_id         = azurerm_windows_virtual_machine.avd_vm.*.id[count.index]
-  publisher                  = "Microsoft.Compute"
-  type                       = "JsonADDomainExtension"
-  type_handler_version       = "1.3"
-  auto_upgrade_minor_version = true
-
-  settings = <<SETTINGS
-    {
-      "Name": "${var.domain_name}",
-      "OUPath": "${var.ou_path}",
-      "User": "${var.domain_user_upn}@${var.domain_name}",
-      "Restart": "true",
-      "Options": "3"
-    }
-  SETTINGS
-
-  protected_settings = <<PROTECTED_SETTINGS
-    {
-      "Password": "${var.domain_password}"
-    }
-  PROTECTED_SETTINGS
-
-  lifecycle {
-    ignore_changes = [settings, protected_settings]
-  }
-}
-*/
 
 resource "azurerm_virtual_machine_extension" "dsc" {
   /*
@@ -114,26 +74,15 @@ resource "azurerm_virtual_machine_extension" "dsc" {
   type_handler_version       = "2.73"
   auto_upgrade_minor_version = true
 
-  /*
-  settings = <<-SETTINGS
-    {
-      "modulesUrl": "https://wvdportalstorageblob.blob.core.windows.net/galleryartifacts/Configuration_3-10-2021.zip",
-      "configurationFunction": "Configuration.ps1\\AddSessionHost",
-      "properties": {
-        "HostPoolName":"${azurerm_virtual_desktop_host_pool.hostpool.name}"
-      }
-    }
-  SETTINGS
-  */
   settings = <<-SETTINGS
     {
       "modulesUrl":"https://wvdportalstorageblob.blob.core.windows.net/galleryartifacts/Configuration_08-10-2022.zip",
       "configurationFunction":"Configuration.ps1\\AddSessionHost",
       "properties":{
         "hostPoolName":"${azurerm_virtual_desktop_host_pool.hostpool.name}",
-        "aadJoin":true,
+        "aadJoin":false,
         "UseAgentDownloadEndpoint":true,
-        "aadJoinPreview":false,
+        "aadJoinPreview":true,
         "mdmId":"",
         "sessionHostConfigurationLastUpdateTime":"",
         "registrationInfoToken": "${local.registration_token}"
@@ -150,13 +99,14 @@ resource "azurerm_virtual_machine_extension" "dsc" {
 
   depends_on = [
     azurerm_virtual_desktop_host_pool.hostpool,
-    azurerm_windows_virtual_machine.avd_vm
+    azurerm_windows_virtual_machine.avd_vm,
+    azurerm_virtual_machine_extension.AADLoginForWindows
   ]
 }
 
-/*
+
 resource "azurerm_virtual_machine_extension" "AADLoginForWindows" {
-  
+  /*
   $publisher="Microsoft.Azure.ActiveDirectory"
   $extension="AADLoginForWindows"
   $location="eastus"
@@ -165,7 +115,7 @@ resource "azurerm_virtual_machine_extension" "AADLoginForWindows" {
 
   az vm extension image show -l $location --publisher $publisher -n $extension --version $latest
   */
-/*  
+
   count                      = var.rdsh_count
   name                       = "${var.prefix}-AADLoginForWindows-${count.index + 1}"
   publisher                  = "Microsoft.Azure.ActiveDirectory"
@@ -175,7 +125,6 @@ resource "azurerm_virtual_machine_extension" "AADLoginForWindows" {
   virtual_machine_id         = azurerm_windows_virtual_machine.avd_vm.*.id[count.index]
   depends_on = [
     azurerm_windows_virtual_machine.avd_vm,
-    azurerm_virtual_machine_extension.dsc
   ]
 }
-*/
+

@@ -12,12 +12,12 @@ resource "azurerm_virtual_desktop_workspace" "workspace" {
 
 # Create AVD host pool
 resource "azurerm_virtual_desktop_host_pool" "hostpool" {
-  resource_group_name      = azurerm_resource_group.rg.name
-  location                 = azurerm_resource_group.rg.location
-  name                     = var.hostpool
-  friendly_name            = var.hostpool
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg.location
+  name                = var.hostpool
+  friendly_name       = var.hostpool
   #validate_environment     = true
-  custom_rdp_properties    = "drivestoredirect:s:*;audiomode:i:0;videoplaybackmode:i:1;redirectclipboard:i:1;redirectprinters:i:1;devicestoredirect:s:*;redirectcomports:i:1;redirectsmartcards:i:1;usbdevicestoredirect:s:*;enablecredsspsupport:i:1;redirectwebauthn:i:1;use multimon:i:1;targetisaadjoined:i:1"
+  custom_rdp_properties    = "drivestoredirect:s:*;audiomode:i:0;videoplaybackmode:i:1;redirectclipboard:i:1;redirectprinters:i:1;devicestoredirect:s:*;redirectcomports:i:1;redirectsmartcards:i:1;usbdevicestoredirect:s:*;enablecredsspsupport:i:1;redirectwebauthn:i:1;use multimon:i:1;targetisaadjoined:i:1;"
   description              = "${var.prefix} Terraform HostPool"
   type                     = "Pooled"
   maximum_sessions_allowed = 16
@@ -30,9 +30,9 @@ resource "azurerm_virtual_desktop_host_pool" "hostpool" {
 resource "azurerm_virtual_desktop_host_pool_registration_info" "registrationinfo" {
   hostpool_id     = azurerm_virtual_desktop_host_pool.hostpool.id
   expiration_date = var.rfc3339
-  depends_on          = [
+  depends_on = [
     azurerm_virtual_desktop_host_pool.hostpool
-    ]
+  ]
 }
 
 
@@ -45,8 +45,8 @@ resource "azurerm_virtual_desktop_application_group" "dag" {
   name                = "${var.prefix}-dag"
   friendly_name       = "Desktop AppGroup"
   description         = "AVD application group"
-  depends_on          = [
-    azurerm_virtual_desktop_host_pool.hostpool, 
+  depends_on = [
+    azurerm_virtual_desktop_host_pool.hostpool,
     azurerm_virtual_desktop_workspace.workspace
   ]
 }

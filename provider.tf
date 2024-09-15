@@ -1,3 +1,9 @@
 
+provider "azurerm" {
+  features {}
+  subscription_id = var.subscription_id
+}
 
-# https://client.wvd.microsoft.com/arm/webclient/index.html
+provider "azuread" {
+  tenant_id = var.tenant_id
+}
